@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dbeaverQueryTranformer</title>
+    <style>
+        *{
+            padding : 0;
+            box-sizing: border-box;
+            margin: 0;
+        }
+        body{
+            height: 100vh;
+
+        }
+
+        .textareaBox{
+            padding: 20px;
+            height: 45%;
+        }
+
+        .rqstTextarea, .rsltTextarea{
+            width: 100%;
+            height: 100%;
+        }
+        .btnBox{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btnBox button,
+        .btnBox select,
+        .btnBox span,
+        .btnBox input{
+            padding: 10px;
+            margin-right: 10px;
+        }
+
+        button{
+            padding: 10px;
+            margin-right: 10px;
+
+        }
+
+    </style>
+</head>
+<body>
+    <div class="textareaBox">
+        <textarea id="rqstTextarea" class="rqstTextarea"></textarea>
+    </div>
+
+    <div class="btnBox">
+        <select>
+            <option value="oracle">oracle</option>
+            <option value="tibero">tibero</option>
+            <option value="mysql">mysql</option>
+        </select>
+        <button onclick="createSelect()">SELECT</button>
+        <button onclick="createInsert()">INSERT</button>
+        <button onclick="createUpdate()">UPDATE</button>
+        <button onclick="createDelete()">DELETE</button>
+        <button onclick="createCamelCase()">camelCase</button>
+        <span>SPACE</span>
+        <input type="text" id="space" value="5" />
+    </div>
+
+    <div class="textareaBox">
+        <textarea id="rsltTextarea" class="rsltTextarea"></textarea>
+    </div>
+    <script>
+        function createSelect(){
+            console.log("select");
+            let sql = "SELECT";
+            const selectBtn = document.querySelector('#rqstTextarea');
+            const valueArr = selectBtn.value.split("\n");
+            const space = document.querySelector('#space');
+            for(let i=1; i<valueArr.length-1; i++){
+                var tabArr = valueArr[i].split("\t");
+                console.log(tabArr);
+                const colName = tabArr[0];
+                const colCommnet = tabArr[9];
+                // TODO byte 체크 후 최대 길이에 맞춰서 space 조절하기
+                console.log(colName, colCommnet);
+                sql += colName;
+                sql += ""; // TODO 여기 SPACE 추가
+                sql += "--" + colCommnet;
+                console.log(valueArr.length);
+                // if(i <valueArr.length)
+            }
+        }
+
+        function createInsert(){
+            
+        }
+        function createUpdate(){
+            
+        }
+        function createDelete(){
+
+        }
+        function createCamelCase(){
+        
+        }
+
+    </script>    
+</body>
+</html>

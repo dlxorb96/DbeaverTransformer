@@ -71,29 +71,98 @@
     </div>
     <script>
         function createSelect(){
-            console.log("select");
             let sql = "SELECT";
-            const selectBtn = document.querySelector('#rqstTextarea');
-            const valueArr = selectBtn.value.split("\n");
-            const space = document.querySelector('#space');
+            const query = document.querySelector('#rqstTextarea');
+            const valueArr = query.value.trim().split("\n");
+            console.log(valueArr);
+            const customLength = parseInt(document.querySelector('#space').value);
+            console.log(customLength);
+            if(isNaN(customLength)) customLength = 0;
+            const maxLength = findMaxLength(valueArr);
+
+            const newLine = "\n     ,"
+            const commentMarker = "--"
+            
             for(let i=1; i<valueArr.length-1; i++){
                 var tabArr = valueArr[i].split("\t");
                 console.log(tabArr);
                 const colName = tabArr[0];
                 const colCommnet = tabArr[9];
-                // TODO byte 체크 후 최대 길이에 맞춰서 space 조절하기
                 console.log(colName, colCommnet);
-                sql += colName;
-                sql += ""; // TODO 여기 SPACE 추가
-                sql += "--" + colCommnet;
-                console.log(valueArr.length);
-                // if(i <valueArr.length)
+                const spaceLength = maxLength - colName.length + customLength;
+                let space = "";
+                for(let i=0; i<spaceLength; i++){
+                    space += " ";
+                }
+                console.log("i번째 spaceLength", spaceLength);
+                if(i===1){
+                    sql += " " + colName + space + commentMarker + colCommnet;
+                }else if(i > 1){
+                    sql += newLine + " " + colName + space + commentMarker + colCommnet;
+                }
             }
+
+            sql += "\n  FROM 테이블명"
+            console.log(sql);
+
+            const $rsltTextarea = document.querySelector("#rsltTextarea");
+            $rsltTextarea.value = sql;
         }
 
         function createInsert(){
+            let sql = "INSERT INTO 테이블명";
+            const query = document.querySelector('#rqstTextarea');
+            const valueArr = query.value.trimEnd().split("\n");
+            console.log(valueArr);
+            const customLength = parseInt(document.querySelector('#space').value);
+            console.log(customLength);
+            if(isNaN(customLength)) customLength = 0;
+            const maxLength = findMaxLength(valueArr);
+
+            const newLine = "\n     ,"
+            const commentMarker = "--"
             
+            for(let i=1; i<valueArr.length-1; i++){
+                var tabArr = valueArr[i].split("\t");
+                console.log(tabArr);
+                const colName = tabArr[0];
+                const colCommnet = tabArr[9];
+                console.log(colName, colCommnet);
+                const spaceLength = maxLength - colName.length + customLength;
+                let space = "";
+                for(let i=0; i<spaceLength; i++){
+                    space += " ";
+                }
+                console.log("i번째 spaceLength", spaceLength);
+                if(i===1){
+                    sql += " " + colName + space + commentMarker + colCommnet;
+                }else if(i > 1){
+                    sql += newLine + " " + colName + space + commentMarker + colCommnet;
+                }
+            }
+
+            sql += "\n  FROM 테이블명"
+            console.log(sql);
+
+            const $rsltTextarea = document.querySelector("#rsltTextarea");
+            $rsltTextarea.value = sql;
         }
+
+        /**
+         * INSERT INTO 테이블명
+         *     (a,
+         *      b,
+         *      c)
+         * VALUES
+         *     (a,
+         *      b,
+         *      c);
+         * 
+         * 
+         * 
+        */
+
+
         function createUpdate(){
             
         }
@@ -101,8 +170,18 @@
 
         }
         function createCamelCase(){
-        
+            
         }
+
+        function findMaxLength(valueArr){
+            let maxLength = 0;
+            for(let i=1; i<valueArr.length; i++){
+                const colLength = valueArr[i].split("\t")[0].length;
+                maxLength = colLength > maxLength ? colLength : maxLength
+            }
+            return maxLength;
+        }
+
 
     </script>    
 </body>
